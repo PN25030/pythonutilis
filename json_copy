@@ -1,0 +1,59 @@
+1. Install the `configparser` module if you haven't already:
+
+```bash
+pip install configparser
+```
+
+2. Create an input INI file named `input.ini` with the following content:
+
+```ini
+[key_values]
+key1 = value1
+key2 = value2
+key3 = value3
+```
+
+3. Create an existing JSON file named `target.json` with some initial content:
+
+```json
+{
+    "other_key": "other_value"
+}
+```
+
+4. Use the following Python script to read values from the INI file and add them to the JSON file:
+
+```python
+import configparser
+import json
+
+def update_json_with_ini_values(json_path, ini_path):
+    try:
+        # Read values from the input INI file
+        config = configparser.ConfigParser()
+        config.read(ini_path)
+        ini_values = config['key_values']
+
+        # Read and update the existing JSON file
+        with open(json_path, 'r') as json_file:
+            json_data = json.load(json_file)
+        
+        # Update the JSON data with values from the INI
+        for key, value in ini_values.items():
+            json_data[key] = value
+        
+        # Write back the updated JSON data
+        with open(json_path, 'w') as json_file:
+            json.dump(json_data, json_file, indent=4)
+        
+        print(f"Updated {json_path} with values from {ini_path}")
+    except FileNotFoundError:
+        print("File not found.")
+
+if __name__ == "__main__":
+    update_json_with_ini_values('target.json', 'input.ini')
+```
+
+5. Run the script using `python script_name.py`.
+
+This script will read values from the `input.ini` file and add them to the existing `target.json` file. Make sure that both the `input.ini` and `target.json` files are in the same directory as the script. After running the script, the `target.json` file will be updated to include the new key-value pairs from the INI file.
