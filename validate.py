@@ -67,3 +67,24 @@ json_data = """
 # Validate the JSON
 is_valid, message = validate_json(json_data)
 print(message)
+
+
+def read_properties_to_dict(file_path):
+    try:
+        data = {}
+        with open(file_path, 'r') as properties_file:
+            for line in properties_file:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    data[key.strip()] = value.strip()
+        
+        return data
+    except FileNotFoundError:
+        print("Properties file not found.")
+        return {}
+
+# Usage
+properties_file_path = 'example.properties'
+properties_data = read_properties_to_dict(properties_file_path)
+print(properties_data)
